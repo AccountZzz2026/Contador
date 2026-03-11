@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conteo Regresivo - Perú</title>
+    <style>
+        /* Estilo oscuro y moderno */
+        body {
+            background-color: #0f172a;
+            color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 { font-size: 1.5rem; color: #94a3b8; margin-bottom: 20px; }
+
+        #contador {
+            font-size: 5rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px #38bdf8;
+            background: #1e293b;
+            padding: 20px 40px;
+            border-radius: 15px;
+            border: 2px solid #38bdf8;
+        }
+
+        .info { margin-top: 20px; color: #64748b; }
+    </style>
+</head>
+<body>
+
+    <h1>Tiempo restante para las 6:15 PM (Perú)</h1>
+    <div id="contador">00:00:00</div>
+    <p class="info">Sincronizado con UTC-5</p>
+
+    <script>
+        function actualizarReloj() {
+            const ahora = new Date();
+            
+            // 1. Obtener la fecha de hoy en formato YYYY-MM-DD
+            const hoy = ahora.getFullYear() + '-' + 
+                        String(ahora.getMonth() + 1).padStart(2, '0') + '-' + 
+                        String(ahora.getDate()).padStart(2, '0');
+
+            // 2. Definir meta: Hoy a las 18:15 (6:15 PM) hora de Lima (UTC-5)
+            let meta = new Date(`${hoy}T18:15:00-05:00`);
+
+            // 3. Si ya pasaron las 6:15 PM hoy, apuntar a las 6:15 PM de mañana
+            if (ahora > meta) {
+                meta.setDate(meta.getDate() + 1);
+            }
+
+            const diferencia = meta - ahora;
+
+            // 4. Cálculos matemáticos para tiempo
+            const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+            const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+            const segundos = Math.floor((diferencia / 1000) % 60);
+
+            // 5. Formatear con ceros a la izquierda (00:00:00)
+            const formato = 
+                String(horas).padStart(2, '0') + ":" + 
+                String(minutos).padStart(2, '0') + ":" + 
+                String(segundos).padStart(2, '0');
+
+            document.getElementById('contador').innerText = formato;
+        }
+
+        // Actualizar cada segundo
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj(); // Ejecución inmediata al cargar
+    </script>
+</body>
+</html>
